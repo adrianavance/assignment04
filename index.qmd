@@ -27,7 +27,7 @@ data %>%
   theme(axis.text.x = element_blank()) + 
   labs(
     x = "Collision Type",
-    y = "Total Collisions"
+    y = "Total Collisions!"
   ) 
 ```
 

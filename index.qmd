@@ -11,6 +11,7 @@ data <- read.csv("Crash.csv")
 
 library(ggplot2)
 library(dplyr)
+library(tigris)
 
 ```
 
@@ -27,14 +28,42 @@ data %>%
   theme(axis.text.x = element_blank()) + 
   labs(
     x = "Collision Type",
-    y = "Total Collisions!"
+    y = "Total Collisions"
   ) 
 ```
 
 ## Visualization 2
 
 ```{r}
+library(sf)
+sf_data <- st_as_sf(data, coords = c("Longitude", "Latitude"), crs = 4326)
 
+# Get the county boundaries for the entire state of Maryland
+maryland_counties <- counties("MD")
+
+# Filter Montgomery County
+montgomery_county <- maryland_counties[maryland_counties$NAME == "Montgomery", ]
+
+
+county_map <- ggplot() +
+  geom_sf(data = montgomery_county) +
+  geom_sf(sf_data)
+  theme_void()
+
+
+final_map <- county_map +
+  ggplot() + 
+  geom_sf(data = sf_data) +
+print(final_map)
+
+sf_data %>%
+  ggplot() + 
+  geom_sf(data = sf_data) + 
+  labs(title = "Location of Crashes") + 
+  coord_sf(xlim = c(-80, -74), ylim = c(36, 40))
+
+st_crs(montgomery_county)
+sf_data <- st_set_crs(sf_data, st_crs(montgomery_county))
 ```
 
 ## Visualization 3

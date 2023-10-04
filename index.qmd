@@ -35,6 +35,7 @@ data %>%
 ## Visualization 2
 
 ```{r}
+<<<<<<< HEAD
 library(sf)
 sf_data <- st_as_sf(data, coords = c("Longitude", "Latitude"), crs = 4326)
 
@@ -64,6 +65,11 @@ sf_data %>%
 
 st_crs(montgomery_county)
 sf_data <- st_set_crs(sf_data, st_crs(montgomery_county))
+=======
+data %>%
+  ggplot() +
+  geom_col()
+>>>>>>> aafa08c279f6ff2019bbfbfa710a0f7fedd1c5db
 ```
 
 ## Visualization 3

@@ -34,7 +34,9 @@ data %>%
 ## Visualization 2
 
 ```{r}
-
+data %>%
+  ggplot() +
+  geom_col()
 ```
 
 ## Visualization 3

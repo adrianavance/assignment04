@@ -4,11 +4,19 @@ author: "Adriana Vance and Elena Koshkin"
 format: html
 editor: visual
 ---
+```{r}
+data <- read.csv("Crash.csv")
 
+library(ggplot2)
+library(dplyr)
+
+```
 ## Visualization 1
 
 ```{r}
-
+data %>%
+  ggplot() + 
+  geom_bar(mapping = aes(x = Collision.Type))
 ```
 
 ## Visualization 2

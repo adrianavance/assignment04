@@ -1,0 +1,37 @@
+---
+title: "Analyzing ACS Data with Visualizations"
+author: "Adriana Vance and Elena Koshkin"
+format: html
+editor: visual
+---
+```{r}
+data <- read.csv("Crash.csv")
+
+library(ggplot2)
+library(dplyr)
+
+```
+## Visualization 1
+
+```{r}
+data %>%
+  ggplot() + 
+  geom_bar(mapping = aes(x = Collision.Type))
+```
+
+## Visualization 2
+```{r}
+
+```
+
+## Visualization 3 
+```{r}
+
+```
+
+## Visualization 4
+
+```{r}
+
+```
+

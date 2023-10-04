@@ -5,6 +5,7 @@ format: html
 editor: visual
 https://catalog.data.gov/dataset/crash-reporting-drivers-data 
 ---
+
 ```{r}
 data <- read.csv("Crash.csv")
 
@@ -12,20 +13,32 @@ library(ggplot2)
 library(dplyr)
 
 ```
+
 ## Visualization 1
 
 ```{r}
 data %>%
+  group_by(Collision.Type) %>%
+  summarize(count = n()) %>%
+  filter(count > 10000) %>%
+  filter(Collision.Type != "OTHER") %>%
   ggplot() + 
-  geom_bar(mapping = aes(x = Collision.Type))
+  geom_col(mapping = aes(y = count, x = Collision.Type, color = Collision.Type)) + 
+  theme(axis.text.x = element_blank()) + 
+  labs(
+    x = "Collision Type",
+    y = "Total Collisions"
+  ) 
 ```
 
 ## Visualization 2
+
 ```{r}
 
 ```
 
-## Visualization 3 
+## Visualization 3
+
 ```{r}
 
 ```
@@ -35,4 +48,3 @@ data %>%
 ```{r}
 
 ```
-

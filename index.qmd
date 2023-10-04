@@ -40,33 +40,30 @@ sf_data <- st_as_sf(Crash, coords = c("Longitude", "Latitude"), crs = 4326)
 
 # Get the county boundaries for the entire state of Maryland
 maryland_counties <- counties("MD")
-
 # Filter Montgomery County
 montgomery_county <- maryland_counties[maryland_counties$NAME == "Montgomery", ]
 
+montgomery_roads <- roads("MD", "Montgomery")
+primary_roads <- primary_roads()
 
-county_map <- ggplot() +
-  geom_sf(data = montgomery_county) +
-  geom_sf(sf_data)
-  theme_void()
+filtered_crash_data <- sf_data %>%
+  group_by(ACRS.Report.Type) %>%
+  filter(ACRS.Report.Type == "Fatal Crash") %>%
+  summarize(count = n())
 
-
-final_map <- county_map +
+montgomery_roads %>%
   ggplot() + 
-  geom_sf(data = sf_data) +
-print(final_map)
+   geom_sf(data = montgomery_county) +
+    geom_sf(data = montgomery_roads) +
+  geom_sf(data = filtered_crash_data, aes(color = "Location of Crashes")) + 
+  labs(
+    title = "Fatal Crashes 2015-2023") + 
+  theme_void() + 
+  scale_color_manual(
+    name = "",
+    values = c("Location of Crashes" = "red")
+  )
 
-sf_data %>%
-  ggplot() + 
-  geom_sf(data = sf_data) + 
-  labs(title = "Location of Crashes") + 
-  coord_sf(xlim = c(-80, -74), ylim = c(36, 40))
-
-st_crs(montgomery_county)
-sf_data <- st_set_crs(sf_data, st_crs(montgomery_county))
-data %>%
-  ggplot() +
-  geom_col()
 ```
 
 ## Visualization 3

@@ -21,6 +21,9 @@ data %>%
 
 ## Visualization 2
 ```{r}
+data %>%
+gggplot() +
+geom_line()
 
 ```
 

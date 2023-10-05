@@ -83,24 +83,20 @@ ggplot(Crash, aes(x=Speed.Limit, color=Driver.At.Fault, fill=Driver.At.Fault)) +
 ## Visualization 4
 
 ```{r}
-driver distance 
-geom_spokeplot 
-
-geom_pie()
-injury severity x vehicle year (proportion of years that contributed to severe injuries)
 
 Crash %>%
   group_by(Injury.Severity, Vehicle.Year) %>%
   filter(Vehicle.Year > 1900) %>%
   ggplot() +
-  geom_dotplot(mapping = aes(x = Vehicle.Year, color = Injury.Severity)) 
+  geom_dotplot(mapping = aes(x = Vehicle.Year, y= Injury.Severity, color = Injury.Severity)) 
 
 
 Crash %>%
   group_by(Injury.Severity, Weather) %>%
-  filter(Weather != "NA") %>%
+  filter(Weather != "N/A") %>%
+  summarize(count = n()) %>%
   ggplot() +
-  geom_dotplot(mapping = aes(x = Injury.Severity, color = Weather)) 
+  geom_point(mapping = aes(y = Injury.Severity, x= Weather)) 
 
 ggplot(data = Crash) + 
   geom_point(mapping = aes(x = Injury.Severity, y = Driver.At.Fault, color = Light))

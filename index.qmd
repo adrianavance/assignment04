@@ -73,7 +73,7 @@ ggplot(Crash, aes(x=Speed.Limit)) +
  geom_density(alpha=.2, fill="#FF6666") 
 # Color by groups
 ggplot(Crash, aes(x=Speed.Limit, color=Driver.At.Fault, fill=Driver.At.Fault)) + 
- geom_histogram(aes(y=..density..), alpha=0.5, 
+ geom_histogram(aes(y=after_stat(density)), alpha=0.5, 
                 position="identity")+
  geom_density(alpha=.2) 
   
@@ -85,19 +85,9 @@ ggplot(Crash, aes(x=Speed.Limit, color=Driver.At.Fault, fill=Driver.At.Fault)) +
 ```{r}
 
 Crash %>%
-  group_by(Injury.Severity, Vehicle.Year) %>%
-  filter(Vehicle.Year > 1900) %>%
+  filter(Vehicle.Year > 1940 & Vehicle.Year < 2023) %>%
+  filter(Injury.Severity == "FATAL INJURY") %>% 
   ggplot() +
-  geom_dotplot(mapping = aes(x = Vehicle.Year, y= Injury.Severity, color = Injury.Severity)) 
+  geom_dotplot(mapping = aes(x = Vehicle.Year, y = Injury.Severity, color = Injury.Severity))
 
-
-Crash %>%
-  group_by(Injury.Severity, Weather) %>%
-  filter(Weather != "N/A") %>%
-  summarize(count = n()) %>%
-  ggplot() +
-  geom_point(mapping = aes(y = Injury.Severity, x= Weather)) 
-
-ggplot(data = Crash) + 
-  geom_point(mapping = aes(x = Injury.Severity, y = Driver.At.Fault, color = Light))
 ```

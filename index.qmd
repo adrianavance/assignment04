@@ -1,9 +1,12 @@
 ---
-title: "Analyzing ACS Data with Visualizations"
+title: "Analysis of Reported Car Crashes in Montgomery County, MD"
 author: "Adriana Vance and Elena Koshkin"
 format: html
+code-fold: true
+    code-summary: "Show the code"
 editor: visual
-https://catalog.data.gov/dataset/crash-reporting-drivers-data 
+Data source: https://catalog.data.gov/dataset/crash-reporting-drivers-data 
+warning = FALSE
 ---
 
 ```{r}

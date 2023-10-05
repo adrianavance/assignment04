@@ -15,6 +15,7 @@ Crash <- read.csv("Crash.csv")
 library(ggplot2)
 library(dplyr)
 library(tigris)
+library(sf)
 
 ```
 
@@ -27,18 +28,19 @@ Crash %>%
   filter(count > 10000) %>%
   filter(Collision.Type != "OTHER") %>%
   ggplot() + 
-  geom_col(mapping = aes(y = count, x = Collision.Type, color = Collision.Type)) + 
+  geom_col(mapping = aes(y = count, x = Collision.Type, color = Collision.Type, fill = Collision.Type), alpha = 0.5) + 
   theme(axis.text.x = element_blank()) + 
   labs(
     x = "Collision Type",
-    y = "Total Collisions"
-  ) 
+    y = "Total Collisions",
+    caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data "
+  )
 ```
 
 ## Visualization 2
 
 ```{r}
-library(sf)
+
 sf_data <- st_as_sf(Crash, coords = c("Longitude", "Latitude"), crs = 4326)
 
 # Get the county boundaries for the entire state of Maryland
@@ -56,10 +58,10 @@ filtered_crash_data <- sf_data %>%
 montgomery_roads %>%
   ggplot() + 
    geom_sf(data = montgomery_county) +
-    geom_sf(data = montgomery_roads) +
+    geom_sf(data = montgomery_roads, color = "blue", alpha = 0.3) +
   geom_sf(data = filtered_crash_data, aes(color = "Location of Crashes")) + 
   labs(
-    title = "Fatal Crashes 2015-2023") + 
+    title = "Fatal Crashes 2015-2023", caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data") + 
   theme_void() + 
   scale_color_manual(
     name = "",
@@ -78,7 +80,10 @@ ggplot(Crash, aes(x=Speed.Limit)) +
 ggplot(Crash, aes(x=Speed.Limit, color=Driver.At.Fault, fill=Driver.At.Fault)) + 
  geom_histogram(aes(y=after_stat(density)), alpha=0.5, 
                 position="identity")+
- geom_density(alpha=.2) 
+ geom_density(alpha=.2) +
+  labs(
+    caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data"
+  )
   
 
 ```
@@ -91,6 +96,9 @@ Crash %>%
   filter(Vehicle.Year > 1940 & Vehicle.Year < 2023) %>%
   filter(Injury.Severity == "FATAL INJURY") %>% 
   ggplot() +
-  geom_dotplot(mapping = aes(x = Vehicle.Year, y = Injury.Severity, color = Injury.Severity))
+  geom_dotplot(mapping = aes(x = Vehicle.Year, y = Injury.Severity, color = Injury.Severity), alpha = 0.7, fill = "pink") + 
+   labs(
+    caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data"
+  )
 
 ```

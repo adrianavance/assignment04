@@ -44,7 +44,6 @@ maryland_counties <- counties("MD")
 montgomery_county <- maryland_counties[maryland_counties$NAME == "Montgomery", ]
 
 montgomery_roads <- roads("MD", "Montgomery")
-primary_roads <- primary_roads()
 
 filtered_crash_data <- sf_data %>%
   group_by(ACRS.Report.Type) %>%

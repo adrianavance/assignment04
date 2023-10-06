@@ -59,14 +59,19 @@ montgomery_roads %>%
   ggplot() + 
    geom_sf(data = montgomery_county) +
     geom_sf(data = montgomery_roads, color = "blue", alpha = 0.3) +
-  geom_sf(data = filtered_crash_data, aes(color = "Location of Crashes")) + 
+  geom_sf(data = filtered_crash_data, aes(color = "Location of Crashes", shape = "Location of Crashes")) + 
   labs(
-    title = "Fatal Crashes 2015-2023", caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data") + 
+    title = "Fatal Crashes in Montgomery County", subtitle = "2015-2023", caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data") + 
   theme_void() + 
   scale_color_manual(
     name = "",
     values = c("Location of Crashes" = "red")
+  ) + 
+  scale_shape_manual(
+    name = "",
+    values = c("Location of Crashes" = 8) 
   )
+  
 
 ```
 

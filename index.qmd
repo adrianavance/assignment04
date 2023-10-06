@@ -21,26 +21,7 @@ library(sf)
 
 ## Visualization 1
 
-```{r}
-Crash %>%
-  group_by(Collision.Type) %>%
-  summarize(count = n()) %>%
-  filter(count > 10000) %>%
-  filter(Collision.Type != "OTHER") %>%
-  ggplot() + 
-  geom_col(mapping = aes(y = count, x = Collision.Type, color = Collision.Type, fill = Collision.Type), alpha = 0.5) + 
-  theme(axis.text.x = element_blank()) + 
-  labs(
-    x = "Collision Type",
-    y = "Total Collisions",
-    caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data "
-  )
-```
-
-## Visualization 2
-
-```{r}
-
+```{r, results = "hide", message = FALSE, warning = FALSE}
 sf_data <- st_as_sf(Crash, coords = c("Longitude", "Latitude"), crs = 4326)
 
 # Get the county boundaries for the entire state of Maryland
@@ -50,6 +31,9 @@ montgomery_county <- maryland_counties[maryland_counties$NAME == "Montgomery", ]
 
 montgomery_roads <- roads("MD", "Montgomery")
 
+```
+
+```{r}
 filtered_crash_data <- sf_data %>%
   group_by(ACRS.Report.Type) %>%
   filter(ACRS.Report.Type == "Fatal Crash") %>%
@@ -58,36 +42,63 @@ filtered_crash_data <- sf_data %>%
 montgomery_roads %>%
   ggplot() + 
    geom_sf(data = montgomery_county) +
-    geom_sf(data = montgomery_roads, color = "blue", alpha = 0.3) +
-  geom_sf(data = filtered_crash_data, aes(color = "Location of Crashes")) + 
+    geom_sf(data = montgomery_roads, alpha = 0.3, color = "blue") +
+  
+  geom_sf(data = filtered_crash_data, aes(color = "Location of Crashes", shape = "Location of Crashes")) + 
   labs(
-    title = "Fatal Crashes 2015-2023", caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data") + 
+    title = "Fatal Crashes in Montgomery County", subtitle = "2015-2023", caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data") + 
   theme_void() + 
   scale_color_manual(
     name = "",
     values = c("Location of Crashes" = "red")
+  ) + 
+  scale_shape_manual(
+    name = "",
+    values = c("Location of Crashes" = 8) 
   )
+  
+```
+
+Our first visualization displays a map of all of the fatal crashes that have occurred in Montgomery County, MD in the past 8 years (2015-2023). This map displays the county boundaries as well as all of the roads in the county in blue. This shows that many crashes are concentrated in downtown areas like Rockville. It also indicates that many fatal crashes occur on major roads such as Interstate 270. In terms of policy implications, this could show policymakers that higher concentrations of cars and higher speeds are correlated with more fatal crashes. It is therefore important to enforce speed limits and other safety precautions in these high-risk areas. 
+
+[link text](www.url.com)
+
+## Visualization 2
+
+```{r}
+
+Crash %>%
+  group_by(Collision.Type) %>%
+  summarize(count = n()) %>%
+  filter(count > 10000) %>%
+  filter(Collision.Type != "OTHER") %>%
+  ggplot() + 
+  geom_col(mapping = aes(y = count, x = Collision.Type, fill = Collision.Type), alpha = 0.5) + 
+  theme(axis.text.x = element_blank()) + 
+  labs(
+    x = "Collision Type",
+    y = "Total Collisions",
+    caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data ", 
+    fill = "Collision Type")
 
 ```
+
+Our next visualization displays the five most common types of collisions in Montgomery County. The bar graph shows each type of collision from 2015-2023. The most obvious conclusion is that rear-ends are the most common type of collision in Montgomery County, MD. This may tell us something about the types of scenarios during which drivers tend to collide. Since the majority of rear-end collisions happen due to distracted driving, this may suggest that we should implement a policy that more strictly penalizes distracted driving, or run an awareness campaign about distracted driving.
 
 ## Visualization 3
 
 ```{r}
-ggplot(Crash, aes(x=Speed.Limit)) + 
- geom_histogram(aes(y=after_stat(density)), colour="black", fill="white")+
- geom_density(alpha=.2, fill="#FF6666") 
-# Color by groups
-ggplot(Crash, aes(x=Speed.Limit, color=Driver.At.Fault, fill=Driver.At.Fault)) + 
- geom_histogram(aes(y=after_stat(density)), alpha=0.5, 
-                position="identity")+
- geom_density(alpha=.2) +
-  labs(
-    x = "Speed Limit",
-    y = "Density", 
-    caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data"
-  ) + theme(legend.title = element_text(colour="orange", size=8, 
-                                      face="bold")) 
 
+Crash %>%
+  filter(Vehicle.Year > 1940 & Vehicle.Year < 2023) %>%
+  filter(Injury.Severity == "FATAL INJURY") %>% 
+  ggplot(aes(x= Vehicle.Year, fill = Injury.Severity)) +
+  geom_histogram(alpha = 0.4, color = "#000000", fill = "#0200F9") + labs(
+    title = "Fatal Injuries by Vehicle Year", subtitle = "Years 1940-2023",
+    x = "Vehicle Year", 
+    y = "Count", 
+    caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data") + 
+  theme_light()
   
 
 ```
@@ -96,18 +107,15 @@ ggplot(Crash, aes(x=Speed.Limit, color=Driver.At.Fault, fill=Driver.At.Fault)) +
 
 ```{r}
 
-Crash %>%
-  filter(Vehicle.Year > 1940 & Vehicle.Year < 2023) %>%
-  filter(Injury.Severity == "FATAL INJURY") %>% 
-  ggplot() +
-  geom_dotplot(mapping = aes(x = Vehicle.Year, y = Injury.Severity, color = Injury.Severity, size = 10), alpha = 0.7, fill = "purple") + 
-   labs(
-     x = "Vehicle Year", 
-     y = "Injury Severity", 
-    caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data"
-  ) +
-  theme_bw() +
-  guides(color=guide_legend("Injury Severity"))
+ggplot(Crash, aes(x=Speed.Limit, fill=Driver.At.Fault)) +
+  geom_density(alpha=.4) +
+  labs(
+    x = "Speed Limit",
+    y = "Density",
+    caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data", fill = "Driver at Fault"
+    ) + 
+  theme(legend.title = element_text(colour="purple", size=10, face="bold"))
 
 
 ```
+

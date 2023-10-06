@@ -3,10 +3,9 @@ title: "Analysis of Reported Car Crashes in Montgomery County, MD"
 author: "Adriana Vance and Elena Koshkin"
 format: html
 code-fold: true
-    code-summary: "Show the code"
 editor: visual
-Data source: https://catalog.data.gov/dataset/crash-reporting-drivers-data 
-warning = FALSE
+execute: 
+  echo: false 
 ---
 
 ```{r}
@@ -114,7 +113,7 @@ ggplot(Crash, aes(x=Speed.Limit, fill=Driver.At.Fault)) +
     y = "Density",
     caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data", fill = "Driver at Fault"
     ) + 
-  theme(legend.title = element_text(colour="blue", size=10, face="bold"))
+  theme(legend.title = element_text(colour="purple", size=10, face="bold"))
 
 
 ```

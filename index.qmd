@@ -113,7 +113,7 @@ ggplot(Crash, aes(x=Speed.Limit, fill=Driver.At.Fault)) +
     y = "Density",
     caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data", fill = "Driver at Fault"
     ) + 
-  theme(legend.title = element_text(colour="purple", size=10, face="bold"))
+  theme(legend.title = element_text(colour="orange", size=10, face="bold"))
 
 
 ```

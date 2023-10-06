@@ -1,14 +1,14 @@
 ---
 title: "Analysis of Reported Car Crashes in Montgomery County, MD"
-author: "Adriana Vance and Elena Koshkin"
+authors: "Adriana Vance and Elena Koshkin"
 format: html
 code-fold: true
 editor: visual
 execute: 
-  echo: false 
+  warning: false 
 ---
 
-```{r}
+```{r, results = "hide", message = FALSE, warning = FALSE}
 Crash <- read.csv("Crash.csv")
 
 library(ggplot2)
@@ -30,9 +30,7 @@ montgomery_county <- maryland_counties[maryland_counties$NAME == "Montgomery", ]
 
 montgomery_roads <- roads("MD", "Montgomery")
 
-```
 
-```{r}
 filtered_crash_data <- sf_data %>%
   group_by(ACRS.Report.Type) %>%
   filter(ACRS.Report.Type == "Fatal Crash") %>%
@@ -58,9 +56,7 @@ montgomery_roads %>%
   
 ```
 
-Our first visualization displays a map of all of the fatal crashes that have occurred in Montgomery County, MD in the past 8 years (2015-2023). This map displays the county boundaries as well as all of the roads in the county in blue. This shows that many crashes are concentrated in downtown areas like Rockville. It also indicates that many fatal crashes occur on major roads such as Interstate 270. In terms of policy implications, this could show policymakers that higher concentrations of cars and higher speeds are correlated with more fatal crashes. It is therefore important to enforce speed limits and other safety precautions in these high-risk areas. 
-
-[link text](www.url.com)
+Our first visualization displays a map of all of the fatal crashes that have occurred in Montgomery County, MD in the past 8 years (2015-2023). This map displays the county boundaries as well as all of the roads in the county in blue. This shows that many crashes are concentrated in downtown areas like Rockville. It also indicates that many fatal crashes occur on major roads such as Interstate 270. In terms of policy implications, this could show policymakers that higher concentrations of cars and higher speeds are correlated with more fatal crashes. It is therefore important to enforce speed limits and other safety precautions in these high-risk areas.
 
 ## Visualization 2
 
@@ -78,11 +74,11 @@ Crash %>%
     x = "Collision Type",
     y = "Total Collisions",
     caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data ", 
-    fill = "Collision Type")
+    fill = "Collision Type", title = "Most Common Collisions in Montgomery County", subtitle = "Totals from 2015-2023")
 
 ```
 
-Our next visualization displays the five most common types of collisions in Montgomery County. The bar graph shows each type of collision from 2015-2023. The most obvious conclusion is that rear-ends are the most common type of collision in Montgomery County, MD. This may tell us something about the types of scenarios during which drivers tend to collide. Since the majority of rear-end collisions happen due to distracted driving, this may suggest that we should implement a policy that more strictly penalizes distracted driving, or run an awareness campaign about distracted driving.
+Our next visualization displays the five most common types of collisions in Montgomery County. The bar graph shows each type of collision from 2015-2023. The most obvious conclusion is that rear-ends are the most common type of collision in Montgomery County, MD. This may tell us something about the types of scenarios during which drivers tend to collide. Since the majority of rear-end collisions happen due to [distracted driving](https://www.daveabels.com/rear-end-collisions-frequent-type-collision/#:~:text=A%20report%20from%20the%20National%20Transportation%20Safety%20Board%20found%20that,stop%20to%20avoid%20a%20collision.), this may suggest that we should implement a policy that more strictly penalizes distracted driving, or run an awareness campaign about distracted driving.
 
 ## Visualization 3
 
@@ -111,10 +107,9 @@ ggplot(Crash, aes(x=Speed.Limit, fill=Driver.At.Fault)) +
   labs(
     x = "Speed Limit",
     y = "Density",
-    caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data", fill = "Driver at Fault"
+    caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data", fill = "Driver at Fault", title = "Speed Limits by Driver at Fault", subtitle = "Across Crashes"
     ) + 
   theme(legend.title = element_text(colour="maroon", size=10, face="bold"))
 
 
 ```
-

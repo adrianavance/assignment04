@@ -56,7 +56,7 @@ montgomery_roads %>%
   )
   
 ```
-Our first visualization displays a map of all of the fatal crashes that have occurred in Montgomery County, MD in the past 8 years (2015-2023). This map displays the county boundaries as well as all of the roads in the county in blue. This shows that many crashes are concentrated in downtown areas like Rockville. It also indicates that many fatal crashes occur on major roads such as Interstate 270. In terms of policy implications, this could show policymakers that higher concentrations of cars and higher speeds are correlated with more fatal crashes. It is therefore important to implement speed and safety enforcements in these high-risk areas. 
+Our first visualization displays a map of all of the fatal crashes that have occurred in Montgomery County, MD in the past 8 years (2015-2023). This map displays the county boundaries as well as all of the roads in the county in blue. This shows that many crashes are concentrated in downtown areas like Rockville. It also indicates that many fatal crashes occur on major roads such as Interstate 270. In terms of policy implications, this could show policymakers that higher concentrations of cars and higher speeds are correlated with more fatal crashes. It is therefore important to enforce speed limits and other safety precautions in these high-risk areas. 
 ## Visualization 2
 
 ```{r}

@@ -3,10 +3,9 @@ title: "Analysis of Reported Car Crashes in Montgomery County, MD"
 author: "Adriana Vance and Elena Koshkin"
 format: html
 code-fold: true
-    code-summary: "Show the code"
 editor: visual
-Data source: https://catalog.data.gov/dataset/crash-reporting-drivers-data 
-warning = FALSE
+execute: 
+  echo: false 
 ---
 
 ```{r}
@@ -19,10 +18,9 @@ library(sf)
 
 ```
 
-
 ## Visualization 1
 
-```{r}
+```{r, results = "hide", message = FALSE, warning = FALSE}
 sf_data <- st_as_sf(Crash, coords = c("Longitude", "Latitude"), crs = 4326)
 
 # Get the county boundaries for the entire state of Maryland
@@ -32,6 +30,9 @@ montgomery_county <- maryland_counties[maryland_counties$NAME == "Montgomery", ]
 
 montgomery_roads <- roads("MD", "Montgomery")
 
+```
+
+```{r}
 filtered_crash_data <- sf_data %>%
   group_by(ACRS.Report.Type) %>%
   filter(ACRS.Report.Type == "Fatal Crash") %>%
@@ -56,7 +57,11 @@ montgomery_roads %>%
   )
   
 ```
+
 Our first visualization displays a map of all of the fatal crashes that have occurred in Montgomery County, MD in the past 8 years (2015-2023). This map displays the county boundaries as well as all of the roads in the county in blue. This shows that many crashes are concentrated in downtown areas like Rockville. It also indicates that many fatal crashes occur on major roads such as Interstate 270. In terms of policy implications, this could show policymakers that higher concentrations of cars and higher speeds are correlated with more fatal crashes. It is therefore important to enforce speed limits and other safety precautions in these high-risk areas. 
+
+[link text](www.url.com)
+
 ## Visualization 2
 
 ```{r}
@@ -77,26 +82,22 @@ Crash %>%
 
 ```
 
-Our next visualization displays the five most common types of collisions in Montgomery County. The bar graph shows each type of collision from 2015-2023. The most obvious conclusion is that rear-ends are the most common type of collision in Montgomery County, MD. This may tell us something about the types of scenarios during which drivers tend to collide. Since the majority of rear-end collisions happen due to distracted driving, this may suggest that we should implement a policy that more strictly penalizes distracted driving, or run an awareness campaign about distracted driving. 
+Our next visualization displays the five most common types of collisions in Montgomery County. The bar graph shows each type of collision from 2015-2023. The most obvious conclusion is that rear-ends are the most common type of collision in Montgomery County, MD. This may tell us something about the types of scenarios during which drivers tend to collide. Since the majority of rear-end collisions happen due to distracted driving, this may suggest that we should implement a policy that more strictly penalizes distracted driving, or run an awareness campaign about distracted driving.
 
 ## Visualization 3
 
 ```{r}
-ggplot(Crash, aes(x=Speed.Limit, fill=Driver.At.Fault)) + 
- geom_histogram(aes(y=after_stat(density)), colour="black", fill="white")+
- geom_density(alpha=.2, fill="#FF6666") 
 
-# Color by groups
-ggplot(Crash, aes(x=Speed.Limit, fill=Driver.At.Fault)) + 
- geom_histogram(aes(y=after_stat(density)), alpha=0.7, 
-                position="identity")+
- geom_density(alpha=.2) +
-  labs(
-    x = "Speed Limit",
-    y = "Density",
-    caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data", fill = "Driver at Fault"
-  ) + 
-  theme(legend.title = element_text(colour="orange", size=10, face="bold"))
+Crash %>%
+  filter(Vehicle.Year > 1940 & Vehicle.Year < 2023) %>%
+  filter(Injury.Severity == "FATAL INJURY") %>% 
+  ggplot(aes(x= Vehicle.Year, fill = Injury.Severity)) +
+  geom_histogram(alpha = 0.4, color = "#000000", fill = "#0200F9") + labs(
+    title = "Fatal Injuries by Vehicle Year", subtitle = "Years 1940-2023",
+    x = "Vehicle Year", 
+    y = "Count", 
+    caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data") + 
+  theme_light()
   
 
 ```
@@ -117,6 +118,15 @@ Crash %>%
   ) +
   theme_bw() +
   guides(color=guide_legend("Injury Severity"))
+
+ggplot(Crash, aes(x=Speed.Limit, fill=Driver.At.Fault)) +
+  geom_density(alpha=.4) +
+  labs(
+    x = "Speed Limit",
+    y = "Density",
+    caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data", fill = "Driver at Fault"
+    ) + 
+  theme(legend.title = element_text(colour="blue", size=10, face="bold"))
 
 
 ```

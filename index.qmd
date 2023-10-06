@@ -85,7 +85,7 @@ Our next visualization displays the five most common types of collisions in Mont
 ```{r}
 
 Crash %>%
-  filter(Vehicle.Year > 1940 & Vehicle.Year < 2023) %>%
+  filter(Vehicle.Year > 1990 & Vehicle.Year < 2023) %>%
   filter(Injury.Severity == "FATAL INJURY") %>% 
   ggplot(aes(x= Vehicle.Year, fill = Injury.Severity)) +
   geom_histogram(alpha = 0.4, color = "#000000", fill = "#0200F9") + labs(
@@ -94,9 +94,8 @@ Crash %>%
     y = "Count", 
     caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data") + 
   theme_light()
-  
-
 ```
+Our third visualization is a histogram showing the frequency of fatal injuries across vehicle years. Fatal injuries occurred most frequently in cars made around 2006. While there isn't too much of a skewed distribution of fatal injuries on either side of the vehicle year spectrum, this graph does demonstrate that more fatal injuries occur in older vehicles. Though crashes in new vehicles do still result in fatal injuries, this histogram shows that the highest frequency of fatal injuries occurs before the year 2019. This might suggest that newer vehicles are being built with greater safety standards, but also points to the need to update the safety infrastructure of older cars on the road. 
 
 ## Visualization 4
 
@@ -110,6 +109,5 @@ ggplot(Crash, aes(x=Speed.Limit, fill=Driver.At.Fault)) +
     caption = "Source: https://catalog.data.gov/dataset/crash-reporting-drivers-data", fill = "Driver at Fault", title = "Speed Limits by Driver at Fault", subtitle = "Across Crashes"
     ) + 
   theme(legend.title = element_text(colour="maroon", size=10, face="bold"))
-
-
 ```
+This last visualization is a density plot of the speed limits of the roads where crashes occurred. The plot is separated is grouped into three categories depending whether the driver was at fault for the crash. This visualization demonstrates that while most crashes, regardless of whether the driver was at fault or not, occur on roads where the speed limit is 35 mph, there is still a significant concentration of crashes on roads with speed limits less than 35 mph. The policy implication that could be derived from this graph is the necessity for increased driver safety instruction as part of the required training for obtaining a driver's license. It is important that drivers are prioritizing road safety at 5 mph, just as much as at 40mph or above. 
